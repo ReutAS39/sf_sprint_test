@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pereval.apps.PerevalConfig'
-    'rest_framework'
+    'pereval.apps.PerevalConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

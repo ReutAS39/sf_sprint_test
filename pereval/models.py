@@ -48,8 +48,8 @@ class Coords(models.Model):
     height = models.IntegerField(verbose_name='Высота над уровнем моря')
 
 
-class Images(models.Model):
-    pereval = models.ForeignKey('PerevalAdded', on_delete=models.CASCADE, related_name='images')
-    data = models.ImageField(upload_to='photos/%Y/%m/%d/', verbose_name='Изображение', null=True)
-    title = models.CharField(max_length=255)
-    date_added = models.DateField(auto_now_add=True)
+# class Images(models.Model):
+#     pereval = models.ForeignKey('PerevalAdded', on_delete=models.CASCADE, related_name='images')
+#     data = models.ImageField(upload_to='photos/%Y/%m/%d/', verbose_name='Изображение', null=True)
+#     title = models.CharField(max_length=255)
+#     date_added = models.DateField(auto_now_add=True)
