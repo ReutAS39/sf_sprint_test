@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from pereval.models import PerevalAdded, Coords, Level, Users
+from pereval.models import PerevalAdded, Coords, Level, Users, Images, PerevaladdedImages
+
 
 class CoordsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,25 +16,35 @@ class LevelSerialize(serializers.ModelSerializer):
         exclude = ('id',)
 
 
+class ImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Images
+        fields = ('data', 'title')
+        verbose_name = 'Изображение'
+
+# class PerevaladdedImages(serializers.ModelSerializer):
+#     class Meta:
+#         model = PerevalImages
+#         fields = ('__all__')
+#         verbose_name = 'ПереИзобр'
+
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = ('email', 'phone', 'fam', 'name', 'otc',)
+        verbose_name = 'Пользователь'
+
 class PerevalSerializer(serializers.ModelSerializer):
-    # user = UsersSerializer()
+    user = UsersSerializer()
     coords = CoordsSerializer()
     level = LevelSerialize()
-    # images = ImagesSerializer(many=True)
-
+    images = ImagesSerializer(many=True)
+    #images = PerevaladdedImages()
     class Meta:
         model = PerevalAdded
         exclude = ('id', 'status')
 
 
-class UsersSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='first_name')
-    fam = serializers.CharField(source='last_name')
-    otc = serializers.CharField(source='patronymic')
-    email = serializers.CharField()
-    phone = serializers.CharField()
 
-    class Meta:
-        model = Users
-        fields = ('email', 'fam', 'name', 'otc', 'phone')
-        verbose_name = 'Пользователь'
+
+
