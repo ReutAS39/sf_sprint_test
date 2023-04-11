@@ -22,9 +22,9 @@ class ImagesSerializer(serializers.ModelSerializer):
         fields = ('data', 'title')
         verbose_name = 'Изображение'
 
-# class PerevaladdedImages(serializers.ModelSerializer):
+# class PerevaladdedImagesImagesSerializer(serializers.ModelSerializer):
 #     class Meta:
-#         model = PerevalImages
+#         model = PerevaladdedImages
 #         fields = ('__all__')
 #         verbose_name = 'ПереИзобр'
 
@@ -39,7 +39,7 @@ class PerevalSerializer(serializers.ModelSerializer):
     coords = CoordsSerializer()
     level = LevelSerialize()
     images = ImagesSerializer(many=True)
-    #images = PerevaladdedImages()
+    #imagess = PerevaladdedImagesImagesSerializer()
     class Meta:
         model = PerevalAdded
         exclude = ('id', 'status')
