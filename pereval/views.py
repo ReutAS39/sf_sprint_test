@@ -4,6 +4,7 @@ from pereval.models import PerevalAdded
 from sf_sprint.serializers import PerevalSerializer
 
 
-class PerevalApiView(generics.ListAPIView):
+
+class PerevalApiView(generics.ListCreateAPIView):
     queryset = PerevalAdded.objects.all()
     serializer_class = PerevalSerializer

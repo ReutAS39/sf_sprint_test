@@ -8,7 +8,7 @@ phone_regex = RegexValidator(
 
 
 class Users(models.Model):
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=False)
     phone = models.CharField(validators=[phone_regex], max_length=14, blank=True)
     fam = models.CharField(max_length=150)
     name = models.CharField(max_length=150)

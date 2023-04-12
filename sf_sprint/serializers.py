@@ -17,6 +17,7 @@ class LevelSerialize(serializers.ModelSerializer):
 
 
 class ImagesSerializer(serializers.ModelSerializer):
+    data = serializers.URLField()
     class Meta:
         model = Images
         fields = ('data', 'title')
@@ -34,6 +35,7 @@ class UsersSerializer(serializers.ModelSerializer):
         fields = ('email', 'phone', 'fam', 'name', 'otc',)
         verbose_name = 'Пользователь'
 
+
 class PerevalSerializer(serializers.ModelSerializer):
     user = UsersSerializer()
     coords = CoordsSerializer()
@@ -44,7 +46,17 @@ class PerevalSerializer(serializers.ModelSerializer):
         model = PerevalAdded
         exclude = ('id', 'status')
 
-
-
-
+    def create(self, validated_data):
+        users_data = validated_data.pop('user')
+        coords_data = validated_data.pop('coords')
+        image_data = validated_data.pop('images')
+        levels_data = validated_data.pop('level')
+        user = Users.objects.create(**users_data)
+        coords = Coords.objects.create(**coords_data)
+        level = Level.objects.create(**levels_data)
+        pereval = PerevalAdded.objects.create(user=user, coords=coords, level=level, **validated_data)
+        for img in image_data:
+            image = Images.objects.create(**img)
+            PerevaladdedImages.objects.create(images=image, perevaladded=pereval)
+        return pereval
 
