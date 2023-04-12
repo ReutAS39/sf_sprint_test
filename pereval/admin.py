@@ -20,7 +20,7 @@ class LevelAdmin(admin.ModelAdmin):
 
 
 class PerevalAddedimages(admin.ModelAdmin):
-    list_display = ('id', 'perevaladded', 'images')
+    list_display = ('id', 'perevaladded', 'images', 'images_id')
 
 
 class UsersAdmin(admin.ModelAdmin):
