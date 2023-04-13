@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="806cc088-69e0-49f2-bcae-3622488aae37" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pereval/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pereval/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/pereval/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pereval/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pereval/migrations/0002_alter_coords_options_alter_images_options_and_more.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pereval/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pereval/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pereval/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pereval/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sf_sprint/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/sf_sprint/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sf_sprint/serializers.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/sf_sprint/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/sf_sprint/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,6 +38,11 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\projects\sf_sprint_test\pereval" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
