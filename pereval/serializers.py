@@ -71,6 +71,7 @@ class LevelSerialize(serializers.ModelSerializer):
 
 class ImagesSerializer(serializers.ModelSerializer):
     data = serializers.URLField()
+
     class Meta:
         model = Images
         fields = ('data', 'title')
@@ -91,7 +92,10 @@ class ImagesSerializer(serializers.ModelSerializer):
 #         fields = ('__all__')
 #         verbose_name = 'ПереИзобр'
 
+
 class UsersSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+
     class Meta:
         model = Users
         fields = ('email', 'phone', 'fam', 'name', 'otc',)
@@ -103,22 +107,70 @@ class PerevalSerializer(serializers.ModelSerializer):
     coords = CoordsSerializer()
     level = LevelSerialize()
     images = ImagesSerializer(many=True)
+    #add_time = serializers.DateTimeField(read_only=True)
+    #status = serializers.CharField(read_only=True)
     #imagess = PerevaladdedImagesImagesSerializer()
+
     class Meta:
         model = PerevalAdded
-        exclude = ('id', 'status')
+        exclude = ('id',)
+
+    # def create(self, validated_data):
+    #     users_data = validated_data.pop('user')
+    #     coords_data = validated_data.pop('coords')
+    #     image_data = validated_data.pop('images')
+    #     levels_data = validated_data.pop('level')
+    #     coords = Coords.objects.create(**coords_data)
+    #     level = Level.objects.create(**levels_data)
+    #     if Users.objects.filter(email=users_data['email']).exists():
+    #         user = Users.objects.get(email=users_data['email'])
+    #         pereval = PerevalAdded.objects.create(user=user, coords=coords, level=level, **validated_data)
+    #         for img in image_data:
+    #             image = Images.objects.create(**img)
+    #             PerevaladdedImages.objects.create(images=image, perevaladded=pereval)
+    #         return pereval
+    #
+    #     else:
+    #        user = Users.objects.create(**users_data)
+    #        pereval = PerevalAdded.objects.create(user=user, coords=coords, level=level, **validated_data)
+    #     for img in image_data:
+    #         image = Images.objects.create(**img)
+    #         PerevaladdedImages.objects.create(images=image, perevaladded=pereval)
+    #     return pereval
 
     def create(self, validated_data):
         users_data = validated_data.pop('user')
         coords_data = validated_data.pop('coords')
         image_data = validated_data.pop('images')
         levels_data = validated_data.pop('level')
-        user = Users.objects.create(**users_data)
         coords = Coords.objects.create(**coords_data)
-        level = Level.objects.create(**levels_data)
+
+        if Level.objects.filter(winter=levels_data['winter'],
+                                summer=levels_data['summer'],
+                                autumn=levels_data['autumn'],
+                                spring=levels_data['spring']
+                                ).exists():
+            level = Level.objects.get(winter=levels_data['winter'],
+                                      summer=levels_data['summer'],
+                                      autumn=levels_data['autumn'],
+                                      spring=levels_data['spring']
+                                      )
+        else:
+            level = Level.objects.create(**levels_data)
+
+        if Users.objects.filter(email=users_data['email']).exists():
+            user = Users.objects.get(email=users_data['email'])
+        else:
+            user = Users.objects.create(**users_data)
+
         pereval = PerevalAdded.objects.create(user=user, coords=coords, level=level, **validated_data)
         for img in image_data:
             image = Images.objects.create(**img)
             PerevaladdedImages.objects.create(images=image, perevaladded=pereval)
         return pereval
 
+
+# class PerevalUpdateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Users
+#         exclude = ('fam', 'email', 'phone')
