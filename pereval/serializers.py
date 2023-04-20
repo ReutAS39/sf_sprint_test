@@ -174,3 +174,56 @@ class PerevalSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Users
 #         exclude = ('fam', 'email', 'phone')
+
+
+    def update(self, instance, validated_data):
+
+        coords_data = validated_data.pop('coords')
+        image_data = validated_data.pop('images')
+        levels_data = validated_data.pop('level')
+        coords = instance.coords
+        level = instance.level
+        #print(image_data)
+
+        #print(image_data.instance_set.all()[0])
+
+
+        coords.latitude = coords_data.get('latitude', coords.latitude)
+        coords.longitude = coords_data.get('longitude', coords.longitude)
+        coords.height = coords_data.get('height', coords.height)
+        coords.save()
+
+        level.winter = levels_data.get('winter', level.winter)
+        level.summer = levels_data.get('summer', level.summer)
+        level.autumn = levels_data.get('autumn', level.autumn)
+        level.spring = levels_data.get('spring', level.spring)
+        if Level.objects.filter(winter=levels_data['winter'],
+                                summer=levels_data['summer'],
+                                autumn=levels_data['autumn'],
+                                spring=levels_data['spring']
+                                ).exists():
+            instance.level = Level.objects.get(winter=levels_data['winter'],
+                                               summer=levels_data['summer'],
+                                                 autumn=levels_data['autumn'],
+                                                 spring=levels_data['spring']
+                                      )
+            instance.level.save()
+        else:
+            instance.level = Level.objects.create(winter=levels_data['winter'],
+                                                  summer=levels_data['summer'],
+                                                  autumn=levels_data['autumn'],
+                                                  spring=levels_data['spring'])
+            instance.level.save()
+
+
+        instance.beauty_title = validated_data.get('beauty_title', instance.beauty_title)
+        instance.title = validated_data.get('title', instance.title)
+        instance.other_titles = validated_data.get('other_titles', instance.other_titles)
+        instance.connect = validated_data.get("connect", instance.connect)
+        instance.save()
+        return instance
+
+class PerevalSubmitDataListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = '__all__'

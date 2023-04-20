@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from pereval.views import submitData
+from pereval.views import submitData, SubmitDataListView
 
 router = routers.SimpleRouter()
 router.register(r'pereval', submitData)
@@ -26,6 +26,7 @@ router.register(r'pereval', submitData)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
+    path('api/v1/submit-data', SubmitDataListView.as_view(), name='submit-data-list'),
     # path('api/v1/pereval/', PerevalViewSet.as_view({'get': 'list'})),
     # path('api/v1/pereval/<int:pk>', PerevalViewSet.as_view({'put': 'update'})),
 ]

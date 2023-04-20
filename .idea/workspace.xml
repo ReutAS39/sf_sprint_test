@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="806cc088-69e0-49f2-bcae-3622488aae37" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sf_sprint.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sf_sprint.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pereval/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pereval/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pereval/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/pereval/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pereval/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pereval/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sf_sprint/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/sf_sprint/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

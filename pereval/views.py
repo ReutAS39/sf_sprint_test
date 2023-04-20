@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView, ListAPIView
 from pereval.models import PerevalAdded, Users
-from pereval.serializers import PerevalSerializer
+from pereval.serializers import PerevalSerializer, PerevalSubmitDataListSerializer
 
 
 # class PerevalViewSet(viewsets.ModelViewSet):
@@ -49,36 +49,49 @@ class submitData(mixins.CreateModelMixin,
     queryset = PerevalAdded.objects.all()
     serializer_class = PerevalSerializer
 
-    def update(self, request, *args, **kwargs):
-        submit_data = self.get_object()
-        print(submit_data)
-
-
-        if submit_data.status != 'new':
-            message = 'Данные не могут быть отредактированы, т.к. статус "new" не соответствует.'
-            return Response({'state': 0, 'message': message}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = self.get_serializer(submit_data, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        return Response({'state': 1})
-
+    # def update(self, request, *args, **kwargs):
+    #     submit_data = self.get_object()
+    #     print(submit_data)
+    #
+    #
+    #     if submit_data.status != 'new':
+    #         message = 'Данные не могут быть отредактированы, т.к. статус "new" не соответствует.'
+    #         return Response({'state': 0, 'message': message}, status=status.HTTP_400_BAD_REQUEST)
+    #
+    #     serializer = self.get_serializer(submit_data, data=request.data, partial=True)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_update(serializer)
+    #
+    #     return Response({'state': 1})
+    #
+    # def perform_create(self, serializer):
+    #     serializer.save()
 
 # class SubmitDataUpdateView(UpdateAPIView):
 #     queryset = Users.objects.all()
 #     serializer_class = PerevalUpdateSerializer
 #
-#     def update(self, request, *args, **kwargs):
-#         submit_data = self.get_object()
-#
-#
-#         if submit_data.status != 'new':
-#             message = 'Данные не могут быть отредактированы, т.к. статус "new" не соответствует.'
-#             return Response({'state': 0, 'message': message}, status=status.HTTP_400_BAD_REQUEST)
-#
-#         serializer = self.get_serializer(submit_data, data=request.data, partial=True)
-#         serializer.is_valid(raise_exception=True)
-#         self.perform_update(serializer)
-#
-#         return Response({'state': 1})
+    def update(self, request, *args, **kwargs):
+        submit_data = self.get_object()
+
+
+        if submit_data.status != 'new':
+            return Response({'state': 0, 'message': 'Данные не могут быть отредактированы'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(submit_data, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response({'state': 1, 'message': 'Данные успешно отредактированы'})
+
+class SubmitDataListView(ListAPIView):
+    queryset = Users.objects.all()
+    serializer_class = PerevalSubmitDataListSerializer
+
+    def get_queryset(self):
+        email = self.request.query_params.get('user__email', None)
+        print(self.request)
+        if email is not None:
+            return self.queryset.filter(email=email)
+        #return self.queryset.none()
