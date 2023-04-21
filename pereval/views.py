@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView, ListAPIView
 from pereval.models import PerevalAdded, Users
-from pereval.serializers import PerevalSerializer, PerevalSubmitDataListSerializer
+from pereval.serializers import PerevalSerializer#, PerevalSubmitDataListSerializer
 
 
 # class PerevalViewSet(viewsets.ModelViewSet):
@@ -45,25 +45,20 @@ from pereval.serializers import PerevalSerializer, PerevalSubmitDataListSerializ
 class submitData(mixins.CreateModelMixin,
                  mixins.RetrieveModelMixin,
                  viewsets.GenericViewSet,
-                 mixins.UpdateModelMixin):
+                 mixins.UpdateModelMixin,
+                 mixins.ListModelMixin):
+
     queryset = PerevalAdded.objects.all()
     serializer_class = PerevalSerializer
 
-    # def update(self, request, *args, **kwargs):
-    #     submit_data = self.get_object()
-    #     print(submit_data)
-    #
-    #
-    #     if submit_data.status != 'new':
-    #         message = 'Данные не могут быть отредактированы, т.к. статус "new" не соответствует.'
-    #         return Response({'state': 0, 'message': message}, status=status.HTTP_400_BAD_REQUEST)
-    #
-    #     serializer = self.get_serializer(submit_data, data=request.data, partial=True)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_update(serializer)
-    #
-    #     return Response({'state': 1})
-    #
+    def get_queryset(self):
+        email = self.request.query_params.get('user__email', None)
+        pk = self.kwargs.get('pk')
+        if email:
+            return self.queryset.filter(user__email=email)
+        elif pk:
+            return self.queryset.filter(id=pk)
+        return self.queryset.none()
     # def perform_create(self, serializer):
     #     serializer.save()
 
@@ -85,13 +80,12 @@ class submitData(mixins.CreateModelMixin,
 
         return Response({'state': 1, 'message': 'Данные успешно отредактированы'})
 
-class SubmitDataListView(ListAPIView):
-    queryset = Users.objects.all()
-    serializer_class = PerevalSubmitDataListSerializer
-
-    def get_queryset(self):
-        email = self.request.query_params.get('user__email', None)
-        print(self.request)
-        if email is not None:
-            return self.queryset.filter(email=email)
-        #return self.queryset.none()
+# class SubmitDataListView(ListAPIView):
+#     queryset = PerevalAdded.objects.all()
+#     serializer_class = PerevalSerializer
+#
+#     def get_queryset(self):
+#         email = self.request.query_params.get('user__email', None)
+#         if email is not None:
+#             return self.queryset.filter(user__email=email)
+#         return self.queryset.none()

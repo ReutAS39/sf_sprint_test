@@ -113,30 +113,8 @@ class PerevalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PerevalAdded
-        exclude = ('id',)
-
-    # def create(self, validated_data):
-    #     users_data = validated_data.pop('user')
-    #     coords_data = validated_data.pop('coords')
-    #     image_data = validated_data.pop('images')
-    #     levels_data = validated_data.pop('level')
-    #     coords = Coords.objects.create(**coords_data)
-    #     level = Level.objects.create(**levels_data)
-    #     if Users.objects.filter(email=users_data['email']).exists():
-    #         user = Users.objects.get(email=users_data['email'])
-    #         pereval = PerevalAdded.objects.create(user=user, coords=coords, level=level, **validated_data)
-    #         for img in image_data:
-    #             image = Images.objects.create(**img)
-    #             PerevaladdedImages.objects.create(images=image, perevaladded=pereval)
-    #         return pereval
-    #
-    #     else:
-    #        user = Users.objects.create(**users_data)
-    #        pereval = PerevalAdded.objects.create(user=user, coords=coords, level=level, **validated_data)
-    #     for img in image_data:
-    #         image = Images.objects.create(**img)
-    #         PerevaladdedImages.objects.create(images=image, perevaladded=pereval)
-    #     return pereval
+        #exclude = ('id',)
+        fields = '__all__'
 
     def create(self, validated_data):
         users_data = validated_data.pop('user')
@@ -223,7 +201,12 @@ class PerevalSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class PerevalSubmitDataListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Users
-        fields = '__all__'
+
+# class PerevalSubmitDataListSerializer(serializers.ModelSerializer):
+#     # user = UsersSerializer()
+#     # coords = CoordsSerializer()
+#     # level = LevelSerialize()
+#     # images = ImagesSerializer(many=True)
+#     class Meta:
+#         model = PerevalAdded
+#         fields = '__all__'
