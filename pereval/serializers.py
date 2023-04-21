@@ -161,9 +161,13 @@ class PerevalSerializer(serializers.ModelSerializer):
         levels_data = validated_data.pop('level')
         coords = instance.coords
         level = instance.level
-        #print(image_data)
 
-        #print(image_data.instance_set.all()[0])
+        for img in image_data:
+            if Images.objects.filter(data=img['data'], title=img['title']).exists():
+                continue
+            else:
+                image = Images.objects.create(**img)
+                PerevaladdedImages.objects.create(images=image, perevaladded=instance)
 
 
         coords.latitude = coords_data.get('latitude', coords.latitude)
