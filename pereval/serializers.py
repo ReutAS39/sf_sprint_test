@@ -107,14 +107,11 @@ class PerevalSerializer(serializers.ModelSerializer):
     coords = CoordsSerializer()
     level = LevelSerialize()
     images = ImagesSerializer(many=True)
-    #add_time = serializers.DateTimeField(read_only=True)
-    #status = serializers.CharField(read_only=True)
-    #imagess = PerevaladdedImagesImagesSerializer()
 
     class Meta:
         model = PerevalAdded
-        #exclude = ('id',)
-        fields = '__all__'
+        exclude = ('id',)
+        #fields = '__all__'
 
     def create(self, validated_data):
         users_data = validated_data.pop('user')
@@ -146,12 +143,6 @@ class PerevalSerializer(serializers.ModelSerializer):
             image = Images.objects.create(**img)
             PerevaladdedImages.objects.create(images=image, perevaladded=pereval)
         return pereval
-
-
-# class PerevalUpdateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Users
-#         exclude = ('fam', 'email', 'phone')
 
 
     def update(self, instance, validated_data):

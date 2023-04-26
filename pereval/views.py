@@ -5,43 +5,6 @@ from rest_framework.generics import RetrieveAPIView, UpdateAPIView, ListAPIView
 from pereval.models import PerevalAdded, Users
 from pereval.serializers import PerevalSerializer#, PerevalSubmitDataListSerializer
 
-
-# class PerevalViewSet(viewsets.ModelViewSet):
-#     queryset = PerevalAdded.objects.all()
-#     serializer_class = PerevalSerializer
-
-
-# class submitData(mixins.CreateModelMixin, viewsets.GenericViewSet): # ok
-#     queryset = PerevalAdded.objects.all()
-#     serializer_class = PerevalSerializer
-
-# class submitData(viewsets.GenericViewSet, mixins.ListModelMixin):
-#     queryset = PerevalAdded.objects.all()
-#     serializer_class = PerevalSerializer
-#
-#     def create(self, request, *args, **kwargs):
-#         #print(request.data['user']['email']) адрес
-#         #print(Users.objects.filter(email=request.data['user']['email']).exists())   наличие его в бд
-#
-#         serializer = self.get_serializer(data=request.data)
-#         #print(request.data.pop('user')['email'])
-#         #print(request.data)
-#         serializer.is_valid(raise_exception=True)
-#         #print(serializer.validated_data)
-#         self.perform_create(serializer)
-#         headers = self.get_success_headers(serializer.data)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-#
-#     def perform_create(self, serializer):
-#         serializer.save()
-#
-#     def get_success_headers(self, data):
-#         try:
-#             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
-#         except (TypeError, KeyError):
-#             return {}
-
-
 class submitData(mixins.CreateModelMixin,
                  mixins.RetrieveModelMixin,
                  viewsets.GenericViewSet,
@@ -50,6 +13,7 @@ class submitData(mixins.CreateModelMixin,
 
     queryset = PerevalAdded.objects.all()
     serializer_class = PerevalSerializer
+    http_method_names = ['get', 'post', 'patch']
 
     def get_queryset(self):
         email = self.request.query_params.get('user__email', None)
@@ -59,13 +23,14 @@ class submitData(mixins.CreateModelMixin,
         elif pk:
             return self.queryset.filter(id=pk)
         return self.queryset.none()
-    # def perform_create(self, serializer):
-    #     serializer.save()
 
-# class SubmitDataUpdateView(UpdateAPIView):
-#     queryset = Users.objects.all()
-#     serializer_class = PerevalUpdateSerializer
-#
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def update(self, request, *args, **kwargs):
         submit_data = self.get_object()
 
@@ -78,14 +43,5 @@ class submitData(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
-        return Response({'state': 1, 'message': 'Данные успешно отредактированы'})
-
-# class SubmitDataListView(ListAPIView):
-#     queryset = PerevalAdded.objects.all()
-#     serializer_class = PerevalSerializer
-#
-#     def get_queryset(self):
-#         email = self.request.query_params.get('user__email', None)
-#         if email is not None:
-#             return self.queryset.filter(user__email=email)
-#         return self.queryset.none()
+        return Response({'state': 1, 'message': 'Данные успешно отредактированы', "Перевал": serializer.data},
+                        status=status.HTTP_204_NO_CONTENT)

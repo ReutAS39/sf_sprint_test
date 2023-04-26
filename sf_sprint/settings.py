@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pereval.apps.PerevalConfig',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'sf_sprint.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, '../sf_sprint_test/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,13 +117,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 STATIC_URL = 'static/'
 MEDIA_URL = '/photos/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '../sf_sprint/photos')
-STATIC_ROOT = os.path.join(BASE_DIR, '../sf_sprint/static')
+MEDIA_ROOT = os.path.join(BASE_DIR, '../sf_sprint_test/photos')
+#STATIC_ROOT = os.path.join(BASE_DIR, '../sf_sprint_test/static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

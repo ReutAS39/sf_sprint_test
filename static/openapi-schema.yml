@@ -1,0 +1,273 @@
+swagger: '2.0'
+info:
+  title: DRF
+  description: Test description
+  license:
+    name: BSD License
+  version: v1
+host: 127.0.0.1:8000
+schemes:
+  - http
+basePath: /api/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+  - Basic: []
+paths:
+  /submitData/:
+    get:
+      operationId: submitData_list
+      description: ''
+      parameters:
+        - name: "user_email"
+          in: "query"
+          required: true
+          description: "email пользователя"
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Pereval'
+      tags:
+        - submitData
+    post:
+      operationId: submitData_create
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Pereval'
+      responses:
+        '200':
+          description: "Объект создан"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreationResponse'
+        '400':
+          description: "Ошибка при заполнении"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreationResponse'
+        '500':
+          description: "Ошибка при обработке на сервере"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreationResponse'
+      tags:
+        - submitData
+    parameters: []
+  /submitData/{id}/:
+    get:
+      operationId: submitData_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Pereval'
+      tags:
+        - submitData
+    patch:
+      operationId: submitData_partial_update
+      description: ''
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Pereval'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Pereval'
+      tags:
+        - submitData
+    parameters:
+      - name: id
+        in: path
+        description: A unique integer value identifying this Перевал.
+        required: true
+        type: integer
+definitions:
+  Users:
+    required:
+      - email
+      - fam
+      - name
+      - otc
+    type: object
+    properties:
+      email:
+        title: Email
+        type: string
+        format: email
+        minLength: 1
+      phone:
+        title: Phone
+        type: string
+        pattern: ^\+?1?\d{9,12}$
+        maxLength: 14
+      fam:
+        title: Fam
+        type: string
+        maxLength: 150
+        minLength: 1
+      name:
+        title: Name
+        type: string
+        maxLength: 150
+        minLength: 1
+      otc:
+        title: Otc
+        type: string
+        maxLength: 150
+        minLength: 1
+  Coords:
+    type: object
+    properties:
+      latitude:
+        title: Широта
+        type: number
+        x-nullable: true
+      longitude:
+        title: Долгота
+        type: number
+        x-nullable: true
+      height:
+        title: Высота над уровнем моря, м
+        type: integer
+        x-nullable: true
+  LevelSerialize:
+    type: object
+    properties:
+      winter:
+        title: Зима
+        type: string
+        enum:
+          - н/к
+          - 1А
+          - 1Б
+          - 2А
+          - 2Б
+          - 3А
+          - 3Б
+      summer:
+        title: Лето
+        type: string
+        enum:
+          - н/к
+          - 1А
+          - 1Б
+          - 2А
+          - 2Б
+          - 3А
+          - 3Б
+      autumn:
+        title: Осень
+        type: string
+        enum:
+          - н/к
+          - 1А
+          - 1Б
+          - 2А
+          - 2Б
+          - 3А
+          - 3Б
+      spring:
+        title: Весна
+        type: string
+        enum:
+          - н/к
+          - 1А
+          - 1Б
+          - 2А
+          - 2Б
+          - 3А
+          - 3Б
+  Images:
+    required:
+      - data
+      - title
+    type: object
+    properties:
+      data:
+        title: Data
+        type: string
+        format: uri
+        minLength: 1
+      title:
+        title: Title
+        type: string
+        maxLength: 255
+        minLength: 1
+  Pereval:
+    required:
+      - user
+      - coords
+      - level
+      - images
+      - beauty_title
+      - title
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      user:
+        $ref: '#/definitions/Users'
+      coords:
+        $ref: '#/definitions/Coords'
+      level:
+        $ref: '#/definitions/LevelSerialize'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Images'
+      beauty_title:
+        title: Тип
+        type: string
+        maxLength: 20
+        minLength: 1
+      title:
+        title: Название
+        type: string
+        maxLength: 50
+        minLength: 1
+      other_titles:
+        title: Другие названия
+        type: string
+        maxLength: 50
+      connect:
+        title: Что соединяет
+        type: string
+        maxLength: 100
+      add_time:
+        title: Add time
+        type: string
+        format: date-time
+        readOnly: true
+      status:
+        title: Status
+        type: string
+        enum:
+          - new
+          - pending
+          - accepted
+          - rejected

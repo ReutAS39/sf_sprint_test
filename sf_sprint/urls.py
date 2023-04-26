@@ -17,11 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from .yasg import urlpatterns as doc_urls
 
-from pereval.views import submitData#, SubmitDataListView
+from pereval.views import submitData
 
 router = routers.SimpleRouter()
-router.register(r'submitData', submitData)
+router.register(r'submitData', submitData, basename='submitData')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,3 +31,5 @@ urlpatterns = [
     # path('api/v1/pereval/', PerevalViewSet.as_view({'get': 'list'})),
     # path('api/v1/pereval/<int:pk>', PerevalViewSet.as_view({'put': 'update'})),
 ]
+
+urlpatterns += doc_urls
